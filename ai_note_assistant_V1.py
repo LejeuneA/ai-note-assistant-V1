@@ -85,3 +85,36 @@ def analyze_note(note):
 
 
 print(analyze_note("Fix urgent login bug today"))
+
+
+notes = [
+    "Fix urgent login bug today",
+    "Create UI design for dashboard this week",
+    "Prepare meeting notes soon",
+    "Buy coffee later",
+]
+
+
+analyzed_notes = []
+
+for note in notes:
+    analyzed_note = analyze_note(note)
+
+    analyzed_notes.append(analyzed_note)
+
+print("Note | Category | Priority | Action")
+
+for note in analyzed_notes:
+    print(
+        f"{note['note']} | {note['category']} | {note['priority']} | {note['action']}"
+    )
+
+
+user_note = input("Write your note: ")
+
+analysis = analyze_note(user_note)
+
+print(f"Note: {analysis['note']}")
+print(f"Category: {analysis['category']}")
+print(f"Priority: {analysis['priority']}")
+print(f"Action: {analysis['action']}")
