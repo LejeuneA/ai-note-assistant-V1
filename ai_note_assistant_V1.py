@@ -1,7 +1,5 @@
-# Eğer note içinde "bug" veya "fix" varsa → "Development"
-# Eğer note içinde "design" veya "ui" varsa → "Design"
-# Eğer note içinde "meeting" veya "call" varsa → "Communication"
-# Diğer durumlarda → "General"
+# AI Note Assistant v1
+# A small rule-based Python app that analyzes short notes.
 
 
 def get_category(note):
@@ -17,17 +15,6 @@ def get_category(note):
         return "General"
 
 
-print(get_category("Fix login bug before Friday"))
-print(get_category("Create UI design for dashboard"))
-print(get_category("Prepare meeting notes"))
-print(get_category("Buy coffee"))
-
-
-# Eğer note içinde "urgent" veya "today" varsa → "High"
-# Eğer note içinde "this week" veya "soon" varsa → "Medium"
-# Diğer durumlarda → "Low"
-
-
 def get_priority(note):
     note = note.lower()
 
@@ -37,18 +24,6 @@ def get_priority(note):
         return "Medium"
     else:
         return "Low"
-
-
-print(get_priority("Fix urgent login bug today"))
-print(get_priority("Prepare report this week"))
-print(get_priority("Review notes later"))
-
-
-# Eğer priority "High" ise → "Do this first"
-# Eğer category "Development" ise → "Plan the technical task"
-# Eğer category "Design" ise → "Prepare the design work"
-# Eğer category "Communication" ise → "Prepare the message or meeting"
-# Diğer durumlarda → "Add it to your task list"
 
 
 def get_suggested_action(category, priority):
@@ -64,13 +39,6 @@ def get_suggested_action(category, priority):
         return "Add it to your task list"
 
 
-print(get_suggested_action("Development", "High"))
-print(get_suggested_action("Development", "Medium"))
-print(get_suggested_action("Design", "Low"))
-print(get_suggested_action("Communication", "Low"))
-print(get_suggested_action("General", "Low"))
-
-
 def analyze_note(note):
     category = get_category(note)
     priority = get_priority(note)
@@ -84,37 +52,51 @@ def analyze_note(note):
     }
 
 
-print(analyze_note("Fix urgent login bug today"))
+def display_analysis(analysis):
+    print("\nAI Note Analysis")
+    print("----------------")
+    print(f"Note: {analysis['note']}")
+    print(f"Category: {analysis['category']}")
+    print(f"Priority: {analysis['priority']}")
+    print(f"Action: {analysis['action']}")
 
 
-notes = [
-    "Fix urgent login bug today",
-    "Create UI design for dashboard this week",
-    "Prepare meeting notes soon",
-    "Buy coffee later",
-]
+def display_summary(analyzed_notes):
+    print(f"\nYou analyzed {len(analyzed_notes)} note(s).")
+
+    if len(analyzed_notes) > 0:
+        print("\nSession Summary")
+        print("---------------")
+
+        for analysis in analyzed_notes:
+            print(
+                f"{analysis['note']} | "
+                f"{analysis['category']} | "
+                f"{analysis['priority']} | "
+                f"{analysis['action']}"
+            )
 
 
-analyzed_notes = []
+def main():
+    analyzed_notes = []
 
-for note in notes:
-    analyzed_note = analyze_note(note)
+    while True:
+        user_note = input("\nWrite your note or type 'quit': ").strip()
 
-    analyzed_notes.append(analyzed_note)
+        if user_note.lower() == "quit":
+            display_summary(analyzed_notes)
+            print("Goodbye")
+            break
 
-print("Note | Category | Priority | Action")
+        elif user_note == "":
+            print("Please write a note first.")
 
-for note in analyzed_notes:
-    print(
-        f"{note['note']} | {note['category']} | {note['priority']} | {note['action']}"
-    )
+        else:
+            analysis = analyze_note(user_note)
+            display_analysis(analysis)
+
+            analyzed_notes.append(analysis)
 
 
-user_note = input("Write your note: ")
-
-analysis = analyze_note(user_note)
-
-print(f"Note: {analysis['note']}")
-print(f"Category: {analysis['category']}")
-print(f"Priority: {analysis['priority']}")
-print(f"Action: {analysis['action']}")
+if __name__ == "__main__":
+    main()
