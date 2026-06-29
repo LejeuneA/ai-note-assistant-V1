@@ -157,6 +157,7 @@ def display_welcome():
     print("Type 'help' or 'h' to see commands.")
     print("Type 'rules' or 'r' to see category and priority rules.")
     print("Type 'summary' or 's' to see current session summary.")
+    print("Type 'save' or 'sv' to save notes to a file.")
     print("Type 'quit' or 'q' to exit.")
     print("----------------------------------------")
     
@@ -169,6 +170,7 @@ def display_help():
     print("Type 'help' or 'h' to see instructions.")
     print("Type 'rules' or 'r' to see category and priority rules.")
     print("Type 'summary' or 's' to see the current session summary.")
+    print("Type 'save' or 'sv' to save notes to a file.")
     print("Type 'quit' or 'q' to exit.")
     
     print("\nExamples:")
@@ -199,6 +201,25 @@ def display_rules():
     print("- otherwise → Low")
         
         
+def save_notes_to_file(analyzed_notes):
+    if len(analyzed_notes) == 0:
+        print('No notes to save.')
+    else:
+        with open("session_notes.txt", "w") as file:
+            file.write("Saved notes:\n")
+            file.write("--------------\n")
+
+            for analysis in analyzed_notes:
+                file.write(
+                    f"Note: {analysis['note']} | "
+                    f"Category: {analysis['category']} | "
+                    f"Priority: {analysis['priority']} | "
+                    f"Action: {analysis['action']}\n"
+                )
+
+        print('\nNotes saved to session_notes.txt')
+        
+        
 def main():
     analyzed_notes = []
     display_welcome()
@@ -221,6 +242,9 @@ def main():
         elif command == "rules" or command == "r":
             display_rules()
             
+        elif command == "save" or command == "sv":
+            save_notes_to_file(analyzed_notes)
+            
         elif user_note == "":
             print("Please write a note first.")
 
@@ -229,7 +253,7 @@ def main():
             display_analysis(analysis)
 
             analyzed_notes.append(analysis)
-
+        
 
 if __name__ == "__main__":
     main()
