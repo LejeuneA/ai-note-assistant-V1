@@ -209,8 +209,9 @@ def save_notes_to_file(analyzed_notes):
             file.write("Saved notes:\n")
             file.write("--------------\n")
 
-            for analysis in analyzed_notes:
+            for index, analysis in enumerate(analyzed_notes, start=1):
                 file.write(
+                    f"{index}. "
                     f"Note: {analysis['note']} | "
                     f"Category: {analysis['category']} | "
                     f"Priority: {analysis['priority']} | "
