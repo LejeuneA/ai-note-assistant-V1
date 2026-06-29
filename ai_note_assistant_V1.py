@@ -60,20 +60,12 @@ def display_analysis(analysis):
     print(f"Priority: {analysis['priority']}")
     print(f"Action: {analysis['action']}")
     
-    
 
-
-def display_summary(analyzed_notes):
-    # Priority
+def count_priorities(analyzed_notes):
     high_priority_count = 0
     medium_priority_count = 0
     low_priority_count = 0
-    # Category
-    development_count = 0
-    design_count = 0
-    communication_count = 0
-    general_count = 0
-     
+
     for analysis in analyzed_notes:
         if analysis['priority'] == 'High':
             high_priority_count += 1
@@ -81,7 +73,20 @@ def display_summary(analyzed_notes):
             medium_priority_count += 1
         elif analysis['priority'] == 'Low':
             low_priority_count += 1
-             
+
+    return {
+        "High": high_priority_count,
+        "Medium": medium_priority_count,
+        "Low": low_priority_count,
+    }
+
+def count_categories(analyzed_notes):
+    development_count = 0
+    design_count = 0
+    communication_count = 0
+    general_count = 0
+     
+    for analysis in analyzed_notes:             
         if analysis['category'] == 'Development':
             development_count += 1
         elif analysis['category'] == 'Design':
@@ -91,29 +96,21 @@ def display_summary(analyzed_notes):
         else:
             general_count += 1
             
-    print("\nSummary Stats")
-    print("---------------") 
-        
-    print(f"You analyzed {len(analyzed_notes)} note(s).")
-    
-    print("\nPriority")
-    print(f"High priority notes: {high_priority_count}")
-    print(f"Medium priority notes: {medium_priority_count}")
-    print(f"Low priority notes: {low_priority_count}")
-    
-    print("\nCategory")
-    print(f"Development category: {development_count}")
-    print(f"Design category: {design_count}")
-    print(f"Communication category: {communication_count}")
-    print(f"General category: {general_count}")
-    
+    return {
+        'Development': development_count,
+        'Design': design_count,
+        'Communication': communication_count,
+        'General': general_count,
+    }
 
+
+def display_session_table(analyzed_notes):
     if len(analyzed_notes) > 0:
         print("\nSession Summary")
         print("-----------------")
         print("No | Note | Category | Priority | Action")
         print("----------------------------------------")
-        
+
         for index, analysis in enumerate(analyzed_notes, start=1):
             print(
                 f"{index} | "
@@ -125,6 +122,34 @@ def display_summary(analyzed_notes):
     else:
         print("\nNo notes analyzed in this session.")
         
+
+def display_summary_stats(total_notes, priority_counts, category_counts):
+    print("\nSummary Stats")
+    print("---------------")
+
+    print(f"You analyzed {total_notes} note(s).")
+
+    print("\nPriority")
+    print(f"High priority notes: {priority_counts['High']}")
+    print(f"Medium priority notes: {priority_counts['Medium']}")
+    print(f"Low priority notes: {priority_counts['Low']}")
+
+    print("\nCategory")
+    print(f"Development category: {category_counts['Development']}")
+    print(f"Design category: {category_counts['Design']}")
+    print(f"Communication category: {category_counts['Communication']}")
+    print(f"General category: {category_counts['General']}")
+    
+        
+def display_summary(analyzed_notes):
+    total_notes = len(analyzed_notes)
+    priority_counts = count_priorities(analyzed_notes)
+    category_counts = count_categories(analyzed_notes)
+    
+    display_summary_stats(total_notes, priority_counts, category_counts)
+    display_session_table(analyzed_notes)
+    
+    
 def display_welcome():
     print("----------------------------------------")
     print("AI Note Assistant v1")
