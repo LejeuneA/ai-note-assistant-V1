@@ -1,6 +1,6 @@
 # AI Note Assistant v1
 # A small rule-based Python app that analyzes short notes.
-
+import json
 
 def get_category(note):
     note = note.lower()
@@ -221,6 +221,16 @@ def save_notes_to_file(analyzed_notes):
         print('\nNotes saved to session_notes.txt')
         
         
+def save_notes_to_json(analyzed_notes):
+    if len(analyzed_notes) == 0:
+        print('No notes to save.')
+    else:
+        with open("session_notes.json", "w") as file:
+            json.dump(analyzed_notes, file, indent=4)
+
+        print('\nNotes saved to session_notes.json')
+        
+        
 def main():
     analyzed_notes = []
     display_welcome()
@@ -244,7 +254,7 @@ def main():
             display_rules()
             
         elif command == "save" or command == "sv":
-            save_notes_to_file(analyzed_notes)
+            save_notes_to_json(analyzed_notes)
             
         elif user_note == "":
             print("Please write a note first.")
