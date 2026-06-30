@@ -158,6 +158,7 @@ def display_welcome():
     print("Type 'rules' or 'r' to see category and priority rules.")
     print("Type 'summary' or 's' to see current session summary.")
     print("Type 'save' or 'sv' to save notes to a file.")
+    print("Type 'load' or 'ld' to load notes from JSON.")
     print("Type 'quit' or 'q' to exit.")
     print("----------------------------------------")
     
@@ -171,6 +172,7 @@ def display_help():
     print("Type 'rules' or 'r' to see category and priority rules.")
     print("Type 'summary' or 's' to see the current session summary.")
     print("Type 'save' or 'sv' to save notes to a file.")
+    print("Type 'load' or 'ld' to load notes from JSON.")
     print("Type 'quit' or 'q' to exit.")
     
     print("\nExamples:")
@@ -231,6 +233,23 @@ def save_notes_to_json(analyzed_notes):
         print('\nNotes saved to session_notes.json')
         
         
+def load_notes_from_json():
+    try:
+        with open("session_notes.json", "r") as file:
+            loaded_notes = json.load(file)
+
+        print("\nNotes loaded from session_notes.json")
+        return loaded_notes
+
+    except FileNotFoundError:
+        print("\nNo saved JSON file found.")
+        return []
+
+    except json.JSONDecodeError:
+        print("\nSaved JSON file is empty or invalid.")
+        return []
+
+        
 def main():
     analyzed_notes = []
     display_welcome()
@@ -258,6 +277,9 @@ def main():
             
         elif user_note == "":
             print("Please write a note first.")
+            
+        elif command == "load" or command == "ld":
+            analyzed_notes = load_notes_from_json()
 
         else:
             analysis = analyze_note(user_note)
