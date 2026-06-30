@@ -235,13 +235,13 @@ def load_notes_from_json():
         print("\nSaved JSON file is empty or invalid.")
         return []
 
+
 def search_notes_by_keyword(analyzed_notes, keyword):
     matching_notes = []
-
     keyword = keyword.lower()
 
     for analysis in analyzed_notes:
-        if keyword in analysis['note'].lower():
+        if keyword in analysis["note"].lower():
             matching_notes.append(analysis)
 
     return matching_notes
@@ -251,7 +251,10 @@ def display_search_results(matching_notes):
     if len(matching_notes) == 0:
         print("\nNo matching notes found.")
     else:
-        print("\nSearch Results")
+        result_count = len(matching_notes)
+
+        print(f"\n{result_count} matching note(s) found.")
+        print("Search Results")
         print("-----------------")
         print("No | Note | Priority | Action")
         print("--------------------------------")
@@ -263,8 +266,8 @@ def display_search_results(matching_notes):
                 f"{analysis['priority']} | "
                 f"{analysis['action']}"
             )
-            
-            
+
+
 def main():
     analyzed_notes = []
     display_welcome()
@@ -296,10 +299,10 @@ def main():
         elif command == "clear" or command == "c":
             analyzed_notes = []
             print("\nCurrent session notes cleared.")
-            
+
         elif command == "search" or command == "f":
             if len(analyzed_notes) == 0:
-                print("\nNo notes in current session. Type 'load' or 'ld' first.")
+                print("\nNo notes in current session. Add a note or type 'load' or 'ld' first.")
             else:
                 keyword = input("Search keyword: ").strip()
 
@@ -308,7 +311,7 @@ def main():
                 else:
                     matching_notes = search_notes_by_keyword(analyzed_notes, keyword)
                     display_search_results(matching_notes)
-                        
+
         elif user_note == "":
             print("Please write a note first.")
 
