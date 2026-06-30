@@ -238,7 +238,9 @@ def load_notes_from_json():
         with open("session_notes.json", "r") as file:
             loaded_notes = json.load(file)
 
-        print("\nNotes loaded from session_notes.json")
+        loaded_count = len(loaded_notes)
+        print(f"\n{loaded_count} note(s) loaded from session_notes.json")
+
         return loaded_notes
 
     except FileNotFoundError:
@@ -248,7 +250,8 @@ def load_notes_from_json():
     except json.JSONDecodeError:
         print("\nSaved JSON file is empty or invalid.")
         return []
-
+    
+    
         
 def main():
     analyzed_notes = []
