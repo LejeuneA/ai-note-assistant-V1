@@ -1,6 +1,8 @@
 # AI Note Assistant v1
 # A small rule-based Python app that analyzes short notes.
+
 import json
+
 
 def get_category(note):
     note = note.lower()
@@ -59,7 +61,7 @@ def display_analysis(analysis):
     print(f"Category: {analysis['category']}")
     print(f"Priority: {analysis['priority']}")
     print(f"Action: {analysis['action']}")
-    
+
 
 def count_priorities(analyzed_notes):
     high_priority_count = 0
@@ -67,11 +69,11 @@ def count_priorities(analyzed_notes):
     low_priority_count = 0
 
     for analysis in analyzed_notes:
-        if analysis['priority'] == 'High':
+        if analysis["priority"] == "High":
             high_priority_count += 1
-        elif analysis['priority'] == 'Medium':
+        elif analysis["priority"] == "Medium":
             medium_priority_count += 1
-        elif analysis['priority'] == 'Low':
+        elif analysis["priority"] == "Low":
             low_priority_count += 1
 
     return {
@@ -80,27 +82,28 @@ def count_priorities(analyzed_notes):
         "Low": low_priority_count,
     }
 
+
 def count_categories(analyzed_notes):
     development_count = 0
     design_count = 0
     communication_count = 0
     general_count = 0
-     
-    for analysis in analyzed_notes:             
-        if analysis['category'] == 'Development':
+
+    for analysis in analyzed_notes:
+        if analysis["category"] == "Development":
             development_count += 1
-        elif analysis['category'] == 'Design':
+        elif analysis["category"] == "Design":
             design_count += 1
-        elif analysis['category'] == 'Communication':
+        elif analysis["category"] == "Communication":
             communication_count += 1
         else:
             general_count += 1
-            
+
     return {
-        'Development': development_count,
-        'Design': design_count,
-        'Communication': communication_count,
-        'General': general_count,
+        "Development": development_count,
+        "Design": design_count,
+        "Communication": communication_count,
+        "General": general_count,
     }
 
 
@@ -121,12 +124,11 @@ def display_session_table(analyzed_notes):
             )
     else:
         print("\nNo notes analyzed in this session.")
-        
+
 
 def display_summary_stats(total_notes, priority_counts, category_counts):
     print("\nSummary Stats")
     print("---------------")
-
     print(f"You analyzed {total_notes} note(s).")
 
     print("\nPriority")
@@ -139,17 +141,17 @@ def display_summary_stats(total_notes, priority_counts, category_counts):
     print(f"Design category: {category_counts['Design']}")
     print(f"Communication category: {category_counts['Communication']}")
     print(f"General category: {category_counts['General']}")
-    
-        
+
+
 def display_summary(analyzed_notes):
     total_notes = len(analyzed_notes)
     priority_counts = count_priorities(analyzed_notes)
     category_counts = count_categories(analyzed_notes)
-    
+
     display_summary_stats(total_notes, priority_counts, category_counts)
     display_session_table(analyzed_notes)
-    
-    
+
+
 def display_welcome():
     print("----------------------------------------")
     print("AI Note Assistant v1")
@@ -157,85 +159,65 @@ def display_welcome():
     print("Type 'help' or 'h' to see commands.")
     print("Type 'rules' or 'r' to see category and priority rules.")
     print("Type 'summary' or 's' to see current session summary.")
-    print("Type 'save' or 'sv' to save notes to a file.")
+    print("Type 'save' or 'sv' to save notes to JSON.")
     print("Type 'load' or 'ld' to load notes from JSON.")
+    print("Type 'clear' or 'c' to clear current session notes.")
     print("Type 'quit' or 'q' to exit.")
     print("----------------------------------------")
-    
-    
+
+
 def display_help():
     print("\nCommands:")
     print("----------")
-    
     print("Write any note to analyze it.")
     print("Type 'help' or 'h' to see instructions.")
     print("Type 'rules' or 'r' to see category and priority rules.")
     print("Type 'summary' or 's' to see the current session summary.")
-    print("Type 'save' or 'sv' to save notes to a file.")
+    print("Type 'save' or 'sv' to save notes to JSON.")
     print("Type 'load' or 'ld' to load notes from JSON.")
+    print("Type 'clear' or 'c' to clear current session notes.")
     print("Type 'quit' or 'q' to exit.")
-    
+
     print("\nExamples:")
     print("----------")
-    
     print("Fix urgent login bug today")
     print("Create UI design this week")
     print("Prepare meeting notes soon")
     print("Call the customer tomorrow")
 
 
-
 def display_rules():
     print("\nRules:")
     print("--------")
-    
+
     print("\nCategory rules:")
-    print("- bug / fix → Development")
-    print("- design / ui → Design")
-    print("- meeting / call → Communication")
-    print("- otherwise → General")
-    
+    print("- bug / fix -> Development")
+    print("- design / ui -> Design")
+    print("- meeting / call -> Communication")
+    print("- otherwise -> General")
+
     print("\nNote: The first matching category rule wins.")
-    
+
     print("\nPriority rules:")
-    print("- urgent / today → High")
-    print("- this week / soon / tomorrow → Medium")
-    print("- otherwise → Low")
-        
-        
-def save_notes_to_file(analyzed_notes):
-    if len(analyzed_notes) == 0:
-        print('No notes to save.')
-    else:
-        with open("session_notes.txt", "w") as file:
-            file.write("Saved notes:\n")
-            file.write("--------------\n")
+    print("- urgent / today -> High")
+    print("- this week / soon / tomorrow -> Medium")
+    print("- otherwise -> Low")
 
-            for index, analysis in enumerate(analyzed_notes, start=1):
-                file.write(
-                    f"{index}. "
-                    f"Note: {analysis['note']} | "
-                    f"Category: {analysis['category']} | "
-                    f"Priority: {analysis['priority']} | "
-                    f"Action: {analysis['action']}\n"
-                )
 
-        print('\nNotes saved to session_notes.txt')
-        
-        
 def save_notes_to_json(analyzed_notes):
     if len(analyzed_notes) == 0:
-        print('No notes to save.')
+        print("\nNo notes to save.")
     else:
-        with open("session_notes.json", "w") as file:
-            json.dump(analyzed_notes, file, indent=4)
+        with open("session_notes.json", "w", encoding="utf-8") as file:
+            json.dump(analyzed_notes, file, indent=4, ensure_ascii=False)
 
-        print('\nNotes saved to session_notes.json')
-        
-        
+        saved_count = len(analyzed_notes)
+        print(f"\n{saved_count} note(s) saved to session_notes.json")
+
+
 def load_notes_from_json():
     try:
-        with open("session_notes.json", "r") as file:
+        with open("session_notes.json", "r", encoding="utf-8") as file:
             loaded_notes = json.load(file)
 
         loaded_count = len(loaded_notes)
@@ -250,9 +232,8 @@ def load_notes_from_json():
     except json.JSONDecodeError:
         print("\nSaved JSON file is empty or invalid.")
         return []
-    
-    
-        
+
+
 def main():
     analyzed_notes = []
     display_welcome()
@@ -265,31 +246,34 @@ def main():
             display_summary(analyzed_notes)
             print("Session ended. Goodbye.")
             break
-        
+
         elif command == "help" or command == "h":
             display_help()
-            
+
         elif command == "summary" or command == "s":
-            display_summary(analyzed_notes)        
-            
+            display_summary(analyzed_notes)
+
         elif command == "rules" or command == "r":
             display_rules()
-            
+
         elif command == "save" or command == "sv":
             save_notes_to_json(analyzed_notes)
-            
-        elif user_note == "":
-            print("Please write a note first.")
-            
+
         elif command == "load" or command == "ld":
             analyzed_notes = load_notes_from_json()
+
+        elif command == "clear" or command == "c":
+            analyzed_notes = []
+            print("\nCurrent session notes cleared.")
+
+        elif user_note == "":
+            print("Please write a note first.")
 
         else:
             analysis = analyze_note(user_note)
             display_analysis(analysis)
-
             analyzed_notes.append(analysis)
-        
+
 
 if __name__ == "__main__":
     main()
