@@ -153,7 +153,7 @@ def display_summary(analyzed_notes):
 
 
 def display_welcome():
-    print("----------------------------------------")
+    print("-------------------------------------------------------")
     print("AI Note Assistant v1")
     print("Type a short note and I will analyze it.")
     print("Type 'help' or 'h' to see commands.")
@@ -162,13 +162,14 @@ def display_welcome():
     print("Type 'save' or 'sv' to save notes to JSON.")
     print("Type 'load' or 'ld' to load notes from JSON.")
     print("Type 'clear' or 'c' to clear current session notes.")
+    print("Type 'search' or 'f' to search notes by keyword.")
     print("Type 'quit' or 'q' to exit.")
-    print("----------------------------------------")
+    print("-------------------------------------------------------")
 
 
 def display_help():
     print("\nCommands:")
-    print("----------")
+    print("------------")
     print("Write any note to analyze it.")
     print("Type 'help' or 'h' to see instructions.")
     print("Type 'rules' or 'r' to see category and priority rules.")
@@ -176,10 +177,11 @@ def display_help():
     print("Type 'save' or 'sv' to save notes to JSON.")
     print("Type 'load' or 'ld' to load notes from JSON.")
     print("Type 'clear' or 'c' to clear current session notes.")
+    print("Type 'search' or 'f' to search notes by keyword.")
     print("Type 'quit' or 'q' to exit.")
 
     print("\nExamples:")
-    print("----------")
+    print("------------")
     print("Fix urgent login bug today")
     print("Create UI design this week")
     print("Prepare meeting notes soon")
@@ -188,7 +190,7 @@ def display_help():
 
 def display_rules():
     print("\nRules:")
-    print("--------")
+    print("---------")
 
     print("\nCategory rules:")
     print("- bug / fix -> Development")
@@ -233,7 +235,36 @@ def load_notes_from_json():
         print("\nSaved JSON file is empty or invalid.")
         return []
 
+def search_notes_by_keyword(analyzed_notes, keyword):
+    matching_notes = []
 
+    keyword = keyword.lower()
+
+    for analysis in analyzed_notes:
+        if keyword in analysis['note'].lower():
+            matching_notes.append(analysis)
+
+    return matching_notes
+
+
+def display_search_results(matching_notes):
+    if len(matching_notes) == 0:
+        print("\nNo matching notes found.")
+    else:
+        print("\nSearch Results")
+        print("-----------------")
+        print("No | Note | Priority | Action")
+        print("--------------------------------")
+
+        for index, analysis in enumerate(matching_notes, start=1):
+            print(
+                f"{index} | "
+                f"{analysis['note']} | "
+                f"{analysis['priority']} | "
+                f"{analysis['action']}"
+            )
+            
+            
 def main():
     analyzed_notes = []
     display_welcome()
@@ -265,7 +296,19 @@ def main():
         elif command == "clear" or command == "c":
             analyzed_notes = []
             print("\nCurrent session notes cleared.")
+            
+        elif command == "search" or command == "f":
+            if len(analyzed_notes) == 0:
+                print("\nNo notes in current session. Type 'load' or 'ld' first.")
+            else:
+                keyword = input("Search keyword: ").strip()
 
+                if keyword == "":
+                    print("\nPlease enter a keyword.")
+                else:
+                    matching_notes = search_notes_by_keyword(analyzed_notes, keyword)
+                    display_search_results(matching_notes)
+                        
         elif user_note == "":
             print("Please write a note first.")
 
